@@ -44,7 +44,7 @@ jobs:
       - run: pushd /tmp; tar xzf v2.5.0.tar.gz; popd
       - run: pushd /tmp; pushd ./protobuf-2.5.0; aws s3 cp s3://mvn.barbarians.io/build-deps/googletest/release-1.5.0.tar.gz .; cat release-1.5.0.tar.gz | tar zx; mv googletest-release-1.5.0 gtest; ./autogen.sh; ./configure && make && make check && make install && ldconfig; popd; popd
       - run: aws s3 cp --recursive s3://mvn.barbarians.io/hadoop/m2 ~/.m2
-      - run: echo "{ "allow_root": true }" > ~/.bowerrc
+      - run: echo "{ 'allow_root': true }" > ~/.bowerrc
       - run: aws s3 cp s3://mvn.barbarians.io/zookeeper-$ZK_BUILD_NUMBER-bin.jar /tmp
       - run: aws s3 cp s3://mvn.barbarians.io/zookeeper-$ZK_BUILD_NUMBER-test.jar /tmp
       - run: mvn install:install-file -Dfile=/tmp/zookeeper-$ZK_BUILD_NUMBER-bin.jar -DgroupId=org.apache.zookeeper -DartifactId=zookeeper -Dversion=$ZK_BUILD_NUMBER -Dpackaging=jar
