@@ -58,6 +58,7 @@ jobs:
           key: v1-dependencies-{{ checksum "pom.xml" }}
 
       - run: aws s3 cp --recursive ~/.m2 s3://mvn.barbarians.io/tez/m2
+      - run: aws s3 cp /root/repo/tez-dist/target/tez-$TEZ_BUILD_NUMBER-minimal.tar.gz s3://mvn.barbarians.io
         
       # run tests!
       # - run: mvn integration-test
