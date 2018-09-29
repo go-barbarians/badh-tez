@@ -232,6 +232,13 @@
           <artifactId>hadoop-hdfs-client</artifactId>
           <version>${hadoop.version}</version>
        </dependency>
+        <dependency>
+          <groupId>org.apache.hadoop</groupId>
+          <artifactId>hadoop-hdfs-client</artifactId>
+          <version>${hadoop.version}</version>
+          <scope>test</scope>
+          <type>test-jar</type>
+       </dependency>
        <dependency>
           <groupId>org.apache.hadoop</groupId>
           <artifactId>hadoop-hdfs</artifactId>

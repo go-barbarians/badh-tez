@@ -48,8 +48,8 @@ jobs:
           echo '{ "allow_root": true }' > ~/.bowerrc
       - run: aws s3 cp s3://mvn.barbarians.io/zookeeper-$ZK_BUILD_NUMBER-bin.jar /tmp
       - run: aws s3 cp s3://mvn.barbarians.io/zookeeper-$ZK_BUILD_NUMBER-test.jar /tmp
-      - run: mvn install:install-file -Phadoop28 -Dhadoop.version=$HADOOP_BUILD_NUMBER -Dfile=/tmp/zookeeper-$ZK_BUILD_NUMBER-bin.jar -DgroupId=org.apache.zookeeper -DartifactId=zookeeper -Dversion=$ZK_BUILD_NUMBER -Dpackaging=jar
-      - run: mvn install:install-file -Phadoop28 -Dhadoop.version=$HADOOP_BUILD_NUMBER -Dfile=/tmp/zookeeper-$ZK_BUILD_NUMBER-test.jar -DgroupId=org.apache.zookeeper -DartifactId=zookeeper -Dversion=$ZK_BUILD_NUMBER -Dclassifier=tests -Dpackaging=test-jar
+      - run: mvn install:install-file -Phadoop28 -Dhadoop.version=$HADOOP_BUILD_NUMBER -Dfile=/tmp/zookeeper-$ZK_BUILD_NUMBER-bin.jar -DgroupId=org.apache.zookeeper -DartifactId=zookeeper -Dversion=$ZK_BUILD_NUMBER -Dpackaging=jar -Dtez.version=$TEZ_BUILD_NUMBER
+      - run: mvn install:install-file -Phadoop28 -Dhadoop.version=$HADOOP_BUILD_NUMBER -Dfile=/tmp/zookeeper-$ZK_BUILD_NUMBER-test.jar -DgroupId=org.apache.zookeeper -DartifactId=zookeeper -Dversion=$ZK_BUILD_NUMBER -Dclassifier=tests -Dpackaging=test-jar -Dtez.version=$TEZ_BUILD_NUMBER
       - run: mvn clean install package dependency:go-offline -Phadoop28 -DskipTests=true -Dmaven.javadoc.skip=true -Dhadoop.version=$HADOOP_BUILD_NUMBER -Dtez.version=$TEZ_BUILD_NUMBER
 
       - save_cache:
