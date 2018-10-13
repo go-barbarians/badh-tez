@@ -160,7 +160,7 @@ public abstract class TezSplitGrouper {
 
   public List<GroupedSplitContainer> getGroupedSplits(Configuration conf,
                                                       List<SplitContainer> originalSplits,
-                                                      long desiredNumSplits,
+                                                      int desiredNumSplits,
                                                       String wrappedInputFormatName,
                                                       SplitSizeEstimatorWrapper estimator,
                                                       SplitLocationProviderWrapper locationProvider) throws
@@ -186,11 +186,7 @@ public abstract class TezSplitGrouper {
     String emptyLocation = "EmptyLocation";
     String localhost = "localhost";
     String[] emptyLocations = {emptyLocation};
-    if (desiredNumSplits <= Integer.MAX_VALUE) {
-      groupedSplits = new ArrayList<GroupedSplitContainer>((int)desiredNumSplits);
-    } else {
-      groupedSplits = new LinkedList<GroupedSplitContainer>();
-    }
+    groupedSplits = new ArrayList<GroupedSplitContainer>(desiredNumSplits);
 
     boolean allSplitsHaveLocalhost = true;
 
@@ -224,7 +220,7 @@ public abstract class TezSplitGrouper {
       // desired splits is less than number of splits generated
       // Do sanity checks
 
-      long splitCount = desiredNumSplits>0?desiredNumSplits:originalSplits.size();
+      int splitCount = desiredNumSplits>0?desiredNumSplits:originalSplits.size();
       long lengthPerGroup = totalLength/splitCount;
 
       long maxLengthPerGroup = conf.getLong(
@@ -241,7 +237,7 @@ public abstract class TezSplitGrouper {
       }
       if (lengthPerGroup > maxLengthPerGroup) {
         // splits too big to work. Need to override with max size.
-        long newDesiredNumSplits = (totalLength/maxLengthPerGroup) + 1;
+        int newDesiredNumSplits = (int)(totalLength/maxLengthPerGroup) + 1;
         LOG.info("Desired splits: " + desiredNumSplits + " too small. " +
             " Desired splitLength: " + lengthPerGroup +
             " Max splitLength: " + maxLengthPerGroup +
@@ -292,7 +288,7 @@ public abstract class TezSplitGrouper {
     long lengthPerGroup = totalLength/desiredNumSplits;
     int numNodeLocations = distinctLocations.size();
     int numSplitsPerLocation = originalSplits.size()/numNodeLocations;
-    long numSplitsInGroup = originalSplits.size()/desiredNumSplits;
+    int numSplitsInGroup = originalSplits.size()/desiredNumSplits;
 
     // allocation loop here so that we have a good initial size for the lists
     for (String location : distinctLocations.keySet()) {
@@ -346,12 +342,7 @@ public abstract class TezSplitGrouper {
 
     // go through locations and group splits
     int splitsProcessed = 0;
-    List<SplitContainer> group;
-    if (numSplitsInGroup <= Integer.MAX_VALUE) {
-      group = new ArrayList<SplitContainer>((int)numSplitsInGroup);
-    } else {
-      group = new LinkedList<SplitContainer>();
-    }
+    List<SplitContainer> group = new ArrayList<SplitContainer>(numSplitsInGroup);
     Set<String> groupLocationSet = new HashSet<String>(10);
     boolean allowSmallGroups = false;
     boolean doingRackLocal = false;
